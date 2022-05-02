@@ -3,10 +3,7 @@
 
 A mobile application built using Flutter that notifies patients of nearby hospitals and the estimated time of arrival of the ambulance.It provides the hospital as well as ambulance drivers with critical information such as the patient’s location and enables effective GPS route management via real time traffic information on scheduled routes.
 <br>
-<p align="center">
-   <img align="center" height="500" src="https://github.com/lakshmi-warrier/ambulance-tracker/blob/main/screenshots/Welcome_page.jpg"/>
- </p>
- 
+
 ## Why MINNAL RESCUE?
 Other similar applications in the market focus more on communication between management and ambulance fleet, whereas MINNAL RESCUE also incorporates features that keeps patients in the loop.
 
