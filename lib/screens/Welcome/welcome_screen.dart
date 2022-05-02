@@ -28,8 +28,8 @@ class WelcomeScreen extends StatelessWidget {
   mainAxisAlignment: MainAxisAlignment.center,
   children: <Widget>[
   Text(
-  " TRACKIUM ",
-  style: TextStyle(fontSize: 50 , fontWeight: FontWeight.bold , color: Colors.indigo)
+  " MINNAL RESCUE ",
+  style: TextStyle(fontSize: 30 , fontWeight: FontWeight.bold , color: Colors.indigo)
   ),
     Positioned(
       bottom: 0,

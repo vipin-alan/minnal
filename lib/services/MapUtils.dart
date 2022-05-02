@@ -6,10 +6,13 @@ class MapUtils {
 
   static Future<void> openMap(double latitude, double longitude) async {
     String googleUrl = 'https://www.google.com/maps/search/hospitals nearby';
-    if (await canLaunch(googleUrl)) {
+    try {
+
       await launch(googleUrl);
-    } else {
-      throw 'Could not open the map.';
+
+    }
+    catch (err) {
+      throw (err.toString());
     }
   }
 

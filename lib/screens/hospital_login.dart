@@ -1,16 +1,19 @@
 // @dart=2.9
 import 'package:ambulance_tracker/Animation/FadeAnimation.dart';
-import 'package:ambulance_tracker/screens/Welcome/welcome_screen.dart';
 import 'package:ambulance_tracker/screens/patient_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'driver_page.dart';
 import 'hospital_page.dart';
-import 'hospital_login.dart';
-import 'driver_login.dart';
 
-class ChoicePage extends StatelessWidget {
+class HospitalLogin extends StatefulWidget {
+  @override
+  _State createState() => _State();
+}
+
+class _State extends State<HospitalLogin> {
+  final passcode = "admin@hospital";
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +77,7 @@ class ChoicePage extends StatelessWidget {
                               margin: EdgeInsets.only(top: 50),
                               child: Center(
                                 child: Text(
-                                  "Role",
+                                  "Hospital Login",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 40,
@@ -87,7 +90,7 @@ class ChoicePage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(30.0),
                   child: Column(
                     children: <Widget>[
                       FadeAnimation(
@@ -103,64 +106,25 @@ class ChoicePage extends StatelessWidget {
                                       blurRadius: 20.0,
                                       offset: Offset(0, 10))
                                 ]),
-                          )),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      FadeAnimation(
-                          2,
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(143, 148, 251, 1),
-                                  Color.fromRGBO(143, 148, 251, .6),
-                                ])),
-                            child: Center(
-                              child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                PatientPage()));
-                                  },
-                                  child: Text(
-                                    "User",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                          )),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      FadeAnimation(
-                          2,
-                          Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(143, 148, 251, 1),
-                                  Color.fromRGBO(143, 148, 251, .6),
-                                ])),
-                            child: Center(
-                              child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.all(8.0),
 
-                                                HospitalLogin()));
-                                  },
-                                  child: Text(
-                                    "Hospital Reception",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  )),
+                                ),
+
+                                Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextField(
+                                    controller: passwordController,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Password",
+                                        hintStyle:
+                                        TextStyle(color: Colors.grey[400])),
+                                  ),
+                                )
+                              ],
                             ),
                           )),
                       SizedBox(
@@ -179,13 +143,21 @@ class ChoicePage extends StatelessWidget {
                             child: Center(
                               child: FlatButton(
                                   onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                DriverLogin()));
+                                    if(passwordController.text == passcode){
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  HospitalPage()));
+                                    }
+                                    else {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text('login failed!'),
+                                      ));
+                                    }
+
                                   },
                                   child: Text(
-                                    "Driver",
+                                    "Login",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold),
@@ -193,43 +165,8 @@ class ChoicePage extends StatelessWidget {
                             ),
                           )),
                       SizedBox(
-                        height: 30,
+                        height: 70,
                       ),
-                    FadeAnimation(
-                        2,
-                        Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(colors: [
-                                Color.fromRGBO(143, 148, 251, 1),
-                                Color.fromRGBO(143, 148, 251, .6),
-                              ])),
-                          child: Center(
-                            child: FlatButton(
-                                onPressed: () async{
-                                  await FirebaseAuth.instance.signOut();
-                                  Navigator.of(context).pushReplacement(
-                                    PageRouteBuilder(
-                                      pageBuilder: (context, animation, secondaryAnimation) =>
-                                          WelcomeScreen(),
-                                      transitionsBuilder:
-                                          (context, animation, secondaryAnimation, child) =>
-                                          FadeTransition(
-                                            opacity: animation,
-                                            child: child,
-                                          ),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  "Sign Out",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
-                        )),
 
                     ],
                   ),

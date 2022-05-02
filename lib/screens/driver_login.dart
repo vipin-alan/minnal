@@ -1,24 +1,19 @@
-
 // @dart=2.9
 import 'package:ambulance_tracker/Animation/FadeAnimation.dart';
-import 'package:ambulance_tracker/screens/choice_page.dart';
 import 'package:ambulance_tracker/screens/patient_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
+import 'driver_page.dart';
+import 'driver_page.dart';
 
-class LoginScreen extends StatefulWidget {
+class DriverLogin extends StatefulWidget {
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _State createState() => _State();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-
-  final _emailController = TextEditingController();
-
-  final _passwordController = TextEditingController();
-
+class _State extends State<DriverLogin> {
+  final passcode = "driver@hospital";
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               margin: EdgeInsets.only(top: 50),
                               child: Center(
                                 child: Text(
-                                  "Login",
+                                  "Driver Login",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 40,
@@ -117,24 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: EdgeInsets.all(8.0),
 
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    //border: Border(bottom: BorderSide(color: Colors.grey[400]))!
-                                  ),
-                                  child: TextField(
-                                    controller: _emailController,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Email or Phone number",
-                                        hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
-                                  ),
-                                ),
+
                                 Container(
                                   padding: EdgeInsets.all(8.0),
                                   child: TextField(
-                                    controller: _passwordController,
+                                    controller: passwordController,
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: "Password",
@@ -160,47 +142,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ])),
                             child: Center(
                               child: FlatButton(
-                                  onPressed: () async {
-                                    try {
-                                      print("Email");
-                                      print(_emailController.text);
-                                      UserCredential userCredential =
-                                          await FirebaseAuth.instance
-                                          .signInWithEmailAndPassword(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                      );
-                                      if (userCredential.user != null) {
-                                        Navigator.of(context).pushReplacement(
-                                          PageRouteBuilder(
-                                            pageBuilder: (context, animation,
-                                                secondaryAnimation) =>
-                                                ChoicePage(),
-                                            transitionsBuilder: (context,
-                                                animation,
-                                                secondaryAnimation,
-                                                child) =>
-                                                FadeTransition(
-                                                  opacity: animation,
-                                                  child: child,
-                                                ),
-                                          ),
-                                        );
-
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("Login Successful"),
-                                        ));
-                                      }
-                                    } catch (e) {
-                                      print(e.toString());
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text("Login Failed"),
-                                        ),
-                                      );
+                                  onPressed: () {
+                                    if(passwordController.text == passcode){
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  DriverPage()));
                                     }
+                                    else {
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text('login failed!'),
+                                      ));
+                                    }
+
                                   },
                                   child: Text(
                                     "Login",
@@ -213,13 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 70,
                       ),
-                      FadeAnimation(
-                          1.5,
-                          Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                                color: Color.fromRGBO(143, 148, 251, 1)),
-                          )),
+
                     ],
                   ),
                 )

@@ -1,4 +1,6 @@
 // @dart=2.9
+import 'package:ambulance_tracker/screens/choice_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ambulance_tracker/constants.dart';
 import 'package:ambulance_tracker/screens/Login/login_screen.dart';
@@ -18,7 +20,16 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 }
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final _emailController = TextEditingController();
+
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -40,16 +51,67 @@ class Body extends StatelessWidget {
                 width: size.width * 0.7,
               ),
             ),
-            RoundedInputField(
-              hintText: "Your Email",
-              onChanged: (value) {},
+            Container(
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                    border: const UnderlineInputBorder(),
+                    hintText: "Email",
+                    hintStyle:
+                    TextStyle(color: Colors.grey[400])),
+              ),
             ),
-            RoundedPasswordField(
-              onChanged: (value) {},
+            const SizedBox(height: 10,),
+            Container(
+              padding: EdgeInsets.only(left: 40, right: 40),
+              child: TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                    border: const UnderlineInputBorder(),
+                    hintText: "Password",
+                    hintStyle:
+                    TextStyle(color: Colors.grey[400])),
+              ),
             ),
+            const SizedBox(height: 20,),
             RoundedButton(
               text: "SIGNUP",
-              press: () {},
+              press: () async {
+                try {
+                  await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  );
+                  Navigator.of(context).pushReplacement(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation,
+                          secondaryAnimation) =>
+                          ChoicePage(),
+                      transitionsBuilder: (context,
+                          animation,
+                          secondaryAnimation,
+                          child) =>
+                          FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          ),
+                    ),
+                  );
+
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(
+                    content: Text("Account created"),
+                  ));
+                } catch (e) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(
+                    content:
+                    Text("Account creation failed"),
+                  ));
+                }
+              },
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
